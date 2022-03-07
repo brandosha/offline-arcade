@@ -1,0 +1,31 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline Arcade</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="chess-container">
+      <div id="chess-board" :style="{ '--tile-size': chess.tileSize }">
+        <div v-for="row, r in chess.board" >
+          <div class="chess-square" v-for="piece, c in row" :class="(r + c) % 2 ? 'black-cell' : 'white-cell'">
+            <div v-if="chess.moves[chess.movingPiece + squareName(r, c)]">
+              <div @click="moveTo(r, c)" class="chess-move-indicator"></div>
+            </div>
+            <img @click="pieceClicked(r, c)" v-if="piece" :src="'pieces/riohacha/' + piece.color + piece.type.toUpperCase() + '.svg'" class="chess-piece">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.12.1/chess.min.js"></script>
+
+  <script src="scripts/app.js"></script>
+</body>
+</html>
