@@ -32,15 +32,64 @@ body {
   background-color: #8ca2ad;
 }
 
-.chess-piece {
-  width: 100%;
-  height: 100%;
+.chess-square-overlay {
+  position: absolute;
+
+  width: var(--tile-size);
+  height: var(--tile-size);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chess-move-indicator {
-  position: absolute;
-  
+  width: calc(var(--tile-size) * 0.35);
+  height: calc(var(--tile-size) * 0.35);
+
+  background-color: rgba(50, 100, 50);
+  opacity: 0.7;
+
+  border-radius: 50%;
+}
+
+.chess-capture-indicator {
   width: var(--tile-size);
   height: var(--tile-size);
-  background-color: rgba(128, 128, 128, 0.7);
+
+  background-color: rgba(50, 100, 50);
+  opacity: 0.7;
+
+  clip-path: url(#chess-capture-indicator-clip-path);
+}
+
+.chess-moving-indicator {
+  background-color: rgba(50, 100, 50);
+  opacity: 0.7;
+}
+
+.chess-piece {
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+}
+
+.chess-options {
+  margin-top: .75em;
+
+  display: flex;
+
+  justify-content: space-around;
+}
+
+.chess-options > button {
+  font-size: 1.5em;
+  padding: .3em .5em;
+
+  background-color: #333;
+  color: #ddd;
+
+  border-radius: .25em;
+  border-style: none;
 }

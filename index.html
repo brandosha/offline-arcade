@@ -9,23 +9,43 @@
 </head>
 <body>
   <div id="app">
+    <chess></chess>
+  </div>
+
+  <template id="chess-component">
     <div id="chess-container">
-      <div id="chess-board" :style="{ '--tile-size': chess.tileSize }">
-        <div v-for="row, r in chess.board" >
-          <div class="chess-square" v-for="piece, c in row" :class="(r + c) % 2 ? 'black-cell' : 'white-cell'">
-            <div v-if="chess.moves[chess.movingPiece + squareName(r, c)]">
-              <div @click="moveTo(r, c)" class="chess-move-indicator"></div>
-            </div>
-            <img @click="pieceClicked(r, c)" v-if="piece" :src="'pieces/riohacha/' + piece.color + piece.type.toUpperCase() + '.svg'" class="chess-piece">
+      <div id="chess-board" :style="{ '--tile-size': tileSize + 'px' }">
+        <div v-for="row, r in board" >
+          <div v-for="piece, c in row" @click="squareClicked(r, c)"  class="chess-square" :class="(r + c) % 2 ? 'black-cell' : 'white-cell'">
+            <scope-var :square="squareName(r, c)" v-slot="{ square }">
+              <div v-if="square == movingPiece" class="chess-square-overlay chess-moving-indicator"></div>
+              <div v-else-if="moves[movingPiece + square]" @click="moveTo(r, c)" class="chess-square-overlay">
+                <div :class="piece ? 'chess-capture-indicator' : 'chess-move-indicator'"></div>
+              </div>
+            </scope-var>
+            <img v-if="piece" :src="'pieces/riohacha/' + piece.color + piece.type.toUpperCase() + '.svg'" class="chess-piece">
           </div>
         </div>
       </div>
+
+      <div class="chess-options">
+        <button @click="reset">Reset</button>
+      </div>
+
+      <svg width="0" height="0">
+        <defs>
+          <clipPath id="chess-capture-indicator-clip-path">
+            <path :transform="'scale(' + (tileSize / 20) + ')'" d="M0 0 20 0 20 20 0 20 0 0M-1 10A1 1 90 0021 10 1 1 90 00-1 10"/>
+          </clipPath>
+        </defs>
+      </svg>
     </div>
-  </div>
+  </template>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chess.js@0.12.1/chess.min.js"></script>
 
+  <script src="scripts/chess-component.js"></script>
   <script src="scripts/app.js"></script>
 </body>
 </html>
