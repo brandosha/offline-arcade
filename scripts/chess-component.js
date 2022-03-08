@@ -47,7 +47,9 @@ Vue.component("chess", {
     moveTo(row, col) {
       const from = this.movingPiece
       const to = this.squareName(row, col)
-      this.chess.move({ from, to })
+
+      const promotion = "q" // TODO: Allow player to select promotion piece
+      this.chess.move({ from, to, promotion })
 
       this.updateBoard()
     },
