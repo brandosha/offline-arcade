@@ -26,6 +26,9 @@
               <div v-else-if="moves[movingPiece + square]" @click="moveTo(r, c)" class="chess-square-overlay">
                 <div :class="piece ? 'chess-capture-indicator' : 'chess-move-indicator'"></div>
               </div>
+              <div v-else-if="isLastMove(square)">
+                <div class="chess-square-overlay chess-last-move"></div>
+              </div>
             </scope-var>
             <img v-if="piece" :src="'pieces/riohacha/' + piece.color + piece.type.toUpperCase() + '.svg'" class="chess-piece">
           </div>

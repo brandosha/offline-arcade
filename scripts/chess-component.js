@@ -8,7 +8,7 @@ Vue.component("chess", {
       chess.load_pgn(pgn)
     }
 
-    const moveHistory = chess.history()
+    const moveHistory = chess.history({ verbose: true })
 
     return {
       chess,
@@ -55,6 +55,14 @@ Vue.component("chess", {
       const ranks = "abcdefgh"
       return ranks[col] + (8-row)
     },
+    isLastMove(square) {
+      const { history } = this
+      if (history.index < 0) {
+        return false
+      }
+
+      return square == history.moves[history.index].from || square == history.moves[history.index].to
+    },
     moveTo(row, col) {
       const from = this.movingPiece
       const to = this.squareName(row, col)
@@ -62,7 +70,7 @@ Vue.component("chess", {
       const promotion = "q" // TODO: Allow player to select promotion piece
       const move = this.chess.move({ from, to, promotion })
 
-      this.history.moves.push(move.san)
+      this.history.moves.push(move)
       this.history.index = this.history.moves.length - 1
 
       this.updateBoard()
@@ -91,6 +99,10 @@ Vue.component("chess", {
     },
     reset() {
       this.gameOver = false
+      this.history = {
+        index: -1,
+        moves: []
+      }
       this.chess.reset()
       this.updateBoard()
 
