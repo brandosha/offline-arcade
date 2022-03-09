@@ -25,9 +25,13 @@ Vue.component("chess", {
 
   methods: {
     squareClicked(row, col) {
+      if (this.chess.game_over()) {
+        return
+      }
+
       const square = this.squareName(row, col)
       const piece = this.board[row][col]
-      console.log(piece)
+      
       if (piece == null) {
         this.movingPiece = null
       } else if (piece.color != this.chess.turn()) {
@@ -74,6 +78,25 @@ Vue.component("chess", {
     reset() {
       this.chess.reset()
       this.updateBoard()
+    }
+  },
+  computed: {
+    description() {
+      this.board;
+
+      const turn = this.chess.turn() == "w" ? "White" : "Black"
+
+      if (this.chess.in_checkmate()) {
+        return turn + " wins"
+      } else if (this.chess.in_stalemate()) {
+        return "Stalemate"
+      } else if (this.chess.in_threefold_repetition()) {
+        return "Threefold repetition"
+      } else if (this.chess.in_draw()) {
+        return "Draw"
+      }
+
+      return turn + " to move"
     }
   },
 

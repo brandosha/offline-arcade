@@ -14,6 +14,10 @@
 
   <template id="chess-component">
     <div id="chess-container">
+      <div style="margin-bottom: 1em;">
+        {{ description }}
+      </div>
+
       <div id="chess-board" :style="{ '--tile-size': tileSize + 'px' }">
         <div v-for="row, r in board" >
           <div v-for="piece, c in row" @click="squareClicked(r, c)"  class="chess-square" :class="(r + c) % 2 ? 'black-cell' : 'white-cell'">
